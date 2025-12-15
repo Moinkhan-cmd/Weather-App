@@ -1,0 +1,27 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor/IDE
+.vscode/
+.idea/
+.history/
+
+# If you ever add Node tooling/build steps
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+coverage/
+
+# If you later move secrets/config out of code
+.env
+.env.*
