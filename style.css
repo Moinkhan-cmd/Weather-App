@@ -1,0 +1,176 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: poppins, sans-serif;
+    box-sizing: border-box;
+}
+
+:root{
+    --bg: #222;
+    --cardShadow: 0 18px 40px rgba(0,0,0,.35);
+    --ring: rgba(235,255,252,.55);
+}
+
+body{
+    background-color: var(--bg);
+    min-height: 100vh;
+    display: grid;
+    place-items: start center;
+}
+
+.card{
+    width: 90%;
+    max-width: 470px;
+    background: linear-gradient(135deg, #00feba, #5b548a);
+    color: #fff;
+    margin: 100px auto 0;
+    border-radius: 20px;
+    padding: 40px 35px;
+    text-align: center;
+    box-shadow: var(--cardShadow);
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+.search{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search input{
+    border: 0;
+    outline: 0;
+    background-color: #ebfffc;
+    color: #555;
+    padding: 10px 25px;
+    height: 60px;
+    border-radius: 30px;
+    flex: 1;
+    margin-right: 16px;
+    font-size: 18px;
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+.search input:focus{
+    box-shadow: 0 0 0 4px var(--ring);
+    transform: translateY(-1px);
+}
+
+.search button{
+     border: 0;
+    outline: 0;
+    background-color: #ebfffc;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    line-height: 0;
+}
+.search button:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(0,0,0,.22);
+}
+.search button:active{
+    transform: translateY(0px) scale(.98);
+}
+.search button:focus-visible{
+    box-shadow: 0 0 0 4px var(--ring);
+}
+
+.search button img{
+    width: 22px;
+    height: 22px;
+    display: block;
+    object-fit: contain;
+    pointer-events: none;
+    filter: invert(39%) sepia(83%) saturate(7493%) hue-rotate(169deg) brightness(101%) contrast(97%);
+}
+
+.status{
+    margin-top: 10px;
+    min-height: 18px;
+    font-size: 13px;
+    opacity: .9;
+}
+
+.weather-icon{
+    width: 170px;
+    margin: 26px auto 18px;
+    display: block;
+    filter: drop-shadow(0 10px 14px rgba(0,0,0,.2));
+}
+
+.weather{
+    display: none;
+    animation: fadeUp .28s ease both;
+}
+.weather.is-visible{
+    display: block;
+}
+
+.desc{
+    margin-top: 6px;
+    font-size: 14px;
+    opacity: .95;
+    text-transform: capitalize;
+}
+.feels{
+    margin-top: 6px;
+    font-size: 13px;
+    opacity: .9;
+}
+
+.details{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin-top: 50px;
+    gap: 14px;
+}
+
+.col{
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 12px;
+}
+
+.col img{
+    width: 44px;
+    margin-right: 0;
+    opacity: .95;
+}
+
+.humidity, .wind{
+    font-size: 18px;
+    margin-right: -6px;
+}
+
+.error{
+    text-align: left;
+    margin-left: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+    display: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(0,0,0,.18);
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+@keyframes fadeUp{
+    from{ opacity: 0; transform: translateY(6px); }
+    to{ opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 420px){
+    .card{ padding: 28px 22px; }
+    .details{ padding: 0 6px; }
+    .search input{ font-size: 16px; height: 54px; }
+    .search button{ width: 54px; height: 54px; }
+}
