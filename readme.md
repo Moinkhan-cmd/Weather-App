@@ -4,16 +4,15 @@ Small weather app using the [OpenWeather API](https://openweathermap.org/api).
 
 ## Setup
 - Create an OpenWeather API key.
-- Add the key where the app expects it (currently in `index.js`).
+- Put the key where the app expects it (currently in `index.js`).
 
 ## Run
-- Open `index.html` in a browser (or use VS Code “Live Server”).
-- Type a city name and press **Enter** or click the search button.
+- Open `index.html` (or use VS Code “Live Server”).
+- Enter a city and press **Enter** / click search.
 
-## Troubleshooting
-- **Nothing loads / request fails:** confirm your API key is valid and active, and check the browser console/network tab for errors.
-- **City not found:** verify spelling (and optionally try “City, CountryCode”).
+## Deploy (Netlify)
+- Publish the folder that contains `index.html` **and** `index.js` (often the repo root).
+- Ensure the script path/casing in `index.html` matches the real file (`./index.js` vs `Index.js`).
 
-## Notes
-- Putting an API key in client-side code means it can be copied/abused. For anything beyond a demo, proxy requests through a small server (or use a restricted key with tight limits).
-- `.gitignore` is included to avoid committing OS/editor files and common generated folders.
+## Note
+- Client-side API keys can be copied; for anything beyond a demo, proxy requests through a small server.
