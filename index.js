@@ -64,8 +64,7 @@ class WeatherApp {
         if (lastCity) {
             this.checkWeather(lastCity);
         } else {
-            // Optional: Auto-detect on first load
-            // this.getDeviceLocation(); 
+            this.getDeviceLocation(); 
         }
     }
 
