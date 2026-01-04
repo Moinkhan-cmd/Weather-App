@@ -1,98 +1,220 @@
-const apiKey = "bf4d6df40766a270916777f06feaae3d";
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q="
+class WeatherApp {
+    constructor() {
+        this.apiKey = "bf4d6df40766a270916777f06feaae3d";
+        this.apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+        this.searchBox = document.querySelector('.search input');
+        this.searchBtn = document.querySelector('.search button');
+        this.statusEl = document.querySelector('.status');
+        this.weatherEl = document.querySelector('.weather');
+        this.errorEl = document.querySelector('.error');
+        this.errorTextEl = document.querySelector('.error-text');
+        
+        // UI Elements
+        this.cityEl = document.querySelector('.city');
+        this.dateEl = document.querySelector('.date');
+        this.timeEl = document.querySelector('.live-clock');
+        this.tempEl = document.querySelector('.temp');
+        this.humEl = document.querySelector('.humidity');
+        this.windEl = document.querySelector('.wind');
+        this.pressureEl = document.querySelector('.pressure');
+        this.iconEl = document.querySelector('.weather-icon');
+        this.descEl = document.querySelector('.desc');
+        this.feelsLikeEl = document.querySelector('.feels-like');
+        this.updateTimeEl = document.getElementById('updateTime');
 
-const searchBox = document.querySelector('.search input');
-const searchBtn = document.querySelector('.search button');
-
-const weatherEl = document.querySelector('.weather');
-const errorEl = document.querySelector('.error');
-const errorTextEl = document.querySelector('.error-text');
-const statusEl = document.querySelector('.status');
-
-const cityEl = document.querySelector('.city');
-const tempEl = document.querySelector('.temp');
-const humidityEl = document.querySelector('.humidity');
-const windEl = document.querySelector('.wind');
-const iconEl = document.querySelector('.weather-icon');
-const descEl = document.querySelector('.desc');
-const feelsLikeEl = document.querySelector('.feels-like');
-
-const iconMap = {
-  Clouds: "images/clouds.png",
-  Clear: "images/clear.png",
-  Rain: "images/rain.png",
-  Drizzle: "images/drizzle.png",
-  Mist: "images/mist.png",
-  Snow: "images/snow.png",
-  Thunderstorm: "images/thunder.png",
-};
-
-function setLoading(isLoading, msg = "") {
-  statusEl.textContent = msg;
-  searchBtn.disabled = isLoading;
-  searchBox.disabled = isLoading;
-}
-
-function showError(message) {
-  errorTextEl.textContent = message;
-  errorEl.style.display = "block";
-  weatherEl.classList.remove("is-visible");
-  weatherEl.style.display = "none";
-}
-
-function showWeather() {
-  errorEl.style.display = "none";
-  weatherEl.style.display = "block";
-  weatherEl.classList.add("is-visible");
-}
-
-async function checkWeather(city) {
-  const q = (city || "").trim();
-  if (!q) {
-    showError("Please enter a city name.");
-    return;
-  }
-
-  setLoading(true, "Loading...");
-  try {
-    const res = await fetch(apiUrl + encodeURIComponent(q) + `&appid=${apiKey}`);
-
-    if (!res.ok) {
-      if (res.status === 404) showError("City not found. Check spelling and try again.");
-      else showError("Could not fetch weather right now. Try again.");
-      return;
+        this.currentCity = localStorage.getItem("lastCity") || "";
+        this.clockInterval = null;
+        this.refreshInterval = null;
+        
+        this.iconMap = {
+            Clouds: "images/clouds.png",
+            Clear: "images/clear.png",
+            Rain: "images/rain.png",
+            Drizzle: "images/drizzle.png",
+            Mist: "images/mist.png",
+            Snow: "images/snow.png",
+            Thunderstorm: "images/thunder.png",
+            Haze: "images/mist.png", 
+            Smoke: "images/mist.png",
+            Fog: "images/mist.png"
+        };
     }
 
-    const data = await res.json();
+    init() {
+        this.searchBtn.addEventListener('click', () => this.handleSearch());
+        this.searchBox.addEventListener('keydown', (e) => {
+            if (e.key === "Enter") this.handleSearch();
+        });
 
-    cityEl.textContent = data.name;
-    tempEl.textContent = Math.round(data.main.temp) + "°C";
-    feelsLikeEl.textContent = Math.round(data.main.feels_like) + "°C";
-    descEl.textContent = data.weather?.[0]?.description || "";
+        if (this.currentCity) {
+            this.checkWeather(this.currentCity);
+            this.startAutoRefresh();
+        }
+    }
 
-    humidityEl.textContent = data.main.humidity + "%";
+    handleSearch() {
+        const city = this.searchBox.value.trim();
+        if (city) {
+            this.checkWeather(city);
+            this.searchBox.value = "";
+            this.startAutoRefresh(); // Restart interval on new search
+        }
+    }
 
-    // OpenWeather wind speed is m/s -> convert to km/h
-    const windKmh = Math.round((data.wind.speed || 0) * 3.6);
-    windEl.textContent = windKmh + " km/h";
+    startAutoRefresh() {
+        if (this.refreshInterval) clearInterval(this.refreshInterval);
+        // Refresh weather data every 5 minutes
+        this.refreshInterval = setInterval(() => {
+            if (this.currentCity) {
+                console.log(`Auto-refreshing weather for ${this.currentCity}...`);
+                this.checkWeather(this.currentCity, true);
+            }
+        }, 5 * 60 * 1000);
+    }
 
-    const main = data.weather?.[0]?.main;
-    iconEl.src = iconMap[main] || "images/clouds.png";
+    async checkWeather(city, isAutoRefresh = false) {
+        if (!isAutoRefresh) this.setLoading(true, "Fetching data...");
+        
+        try {
+            const res = await fetch(this.apiUrl + encodeURIComponent(city) + `&appid=${this.apiKey}`);
+            
+            if (!res.ok) {
+                if (res.status === 404) this.showError("City not found. Please try again.");
+                else this.showError("Unable to fetch weather data.");
+                return;
+            }
 
-    localStorage.setItem("lastCity", q);
-    showWeather();
-  } catch (e) {
-    showError("Network error. Check your connection and try again.");
-  } finally {
-    setLoading(false, "");
-  }
+            const data = await res.json();
+            this.updateUI(data);
+            this.currentCity = city;
+            localStorage.setItem("lastCity", city);
+            this.errorEl.style.display = "none";
+            
+        } catch (error) {
+            console.error(error);
+            this.showError("Network error. Check your connection.");
+        } finally {
+            this.setLoading(false);
+        }
+    }
+
+    updateUI(data) {
+        // Basic Info
+        this.cityEl.textContent = data.name;
+        this.tempEl.textContent = Math.round(data.main.temp) + "°";
+        this.humEl.textContent = data.main.humidity + "%";
+        
+        // Wind: m/s -> km/h
+        const windSpeed = Math.round((data.wind.speed || 0) * 3.6);
+        this.windEl.textContent = windSpeed + " km/h";
+        
+        // Pressure
+        this.pressureEl.textContent = (data.main.pressure || "--") + " hPa";
+
+        // Description & Feels Like
+        this.descEl.textContent = data.weather?.[0]?.description || "";
+        this.feelsLikeEl.textContent = Math.round(data.main.feels_like);
+
+        // Icon
+        const mainWeather = data.weather?.[0]?.main;
+        this.iconEl.src = this.iconMap[mainWeather] || "images/clouds.png";
+
+        // Update Time
+        const now = new Date();
+        this.updateTimeEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        // Start Live Clock with timezone offset (seconds)
+        this.startClock(data.timezone);
+
+        this.weatherEl.classList.add("is-visible");
+        this.weatherEl.style.display = "block";
+        
+        // Dynamic background tweak based on weather (simple logic)
+        this.updateBackground(mainWeather);
+    }
+
+    startClock(timezoneOffset) {
+        if (this.clockInterval) clearInterval(this.clockInterval);
+
+        const updateTime = () => {
+            // Get current UTC time in ms
+            const now = new Date();
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+            
+            // Calculate city time
+            const cityTime = new Date(utcTime + (timezoneOffset * 1000));
+
+            // Format Time
+            this.timeEl.textContent = cityTime.toLocaleTimeString([], { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false
+            });
+
+            // Format Date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            this.dateEl.textContent = cityTime.toLocaleDateString('en-US', options);
+        };
+
+        updateTime(); // Initial call
+        this.clockInterval = setInterval(updateTime, 1000);
+    }
+
+    updateBackground(weatherMain) {
+        const root = document.documentElement;
+        let gradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'; // Default/Clear
+
+        switch(weatherMain) {
+            case 'Clouds':
+                gradient = 'linear-gradient(135deg, #636fa4 0%, #e8cbc0 100%)'; 
+                break;
+            case 'Rain':
+            case 'Drizzle':
+            case 'Thunderstorm':
+                gradient = 'linear-gradient(135deg, #373B44 0%, #4286f4 100%)';
+                break;
+            case 'Snow':
+                gradient = 'linear-gradient(135deg, #83a4d4 0%, #b6fbff 100%)';
+                break;
+            case 'Clear':
+                gradient = 'linear-gradient(135deg, #2980B9 0%, #6DD5FA 100%, #FFFFFF 100%)'; // Or keep default
+                // Let's use a nice sunny gradient
+                gradient = 'linear-gradient(135deg, #fceabb 0%, #f8b500 100%)';
+                break;
+            default:
+                gradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        }
+        
+        // Slightly change body background for immersive feel
+        if(weatherMain === 'Clear') {
+             // Warmer for clear day
+             document.body.style.background = 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)';
+        } else if (weatherMain === 'Rain') {
+             document.body.style.background = 'linear-gradient(135deg, #20002c 0%, #cbb4d4 100%)';
+        } else {
+            // Reset to default style CSS var or just keep it dynamic
+             document.body.style.background = 'var(--bg-gradient)'; 
+        }
+    }
+
+    setLoading(isLoading, msg = "") {
+        this.statusEl.textContent = msg;
+        this.searchBtn.disabled = isLoading;
+        this.searchBox.disabled = isLoading;
+        if(isLoading) {
+            this.statusEl.style.opacity = '1';
+        } else {
+             this.statusEl.style.opacity = '0'; // fade out
+        }
+    }
+
+    showError(message) {
+        this.errorTextEl.textContent = message;
+        this.errorEl.style.display = "block";
+        this.weatherEl.style.display = "none";
+    }
 }
 
-searchBtn.addEventListener('click', () => checkWeather(searchBox.value));
-searchBox.addEventListener('keydown', (e) => {
-  if (e.key === "Enter") checkWeather(searchBox.value);
-});
-
-const last = localStorage.getItem("lastCity");
-if (last) checkWeather(last);
-
+// Initialize App
+const app = new WeatherApp();
+app.init();
