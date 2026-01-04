@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Pro - Advanced Weather App</title>
+    <title>Weather Pro</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-<<<<<<< HEAD
-    <div class="card">
-        <div class="search" role="search">
-            <input id="cityInput" type="text" placeholder="Enter city name..." spellcheck="false" autocomplete="off" aria-label="City name">
-            <button id="searchBtn" type="button" aria-label="Search weather">
-                <img src="images/search.png" alt="" width="22" height="22">
-            </button>
-=======
     <!-- Animated Background -->
     <div class="background-animation">
         <div class="particles"></div>
@@ -46,15 +39,8 @@
         <!-- Search Section -->
         <div class="search-section">
             <div class="search-container">
-                <input 
-                    id="cityInput" 
-                    type="text" 
-                    placeholder="Search city..." 
-                    spellcheck="false" 
-                    autocomplete="off" 
-                    aria-label="City name"
-                    class="search-input"
-                >
+                <input id="cityInput" type="text" placeholder="Search city..." spellcheck="false" autocomplete="off"
+                    aria-label="City name" class="search-input">
                 <button id="searchBtn" type="button" class="search-btn" aria-label="Search weather">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
@@ -63,7 +49,6 @@
                 </button>
             </div>
             <div class="favorites-container" id="favoritesContainer"></div>
->>>>>>> 344d888954e313cc39c558a3efaa466055022e75
         </div>
 
         <!-- Status Message -->
@@ -75,51 +60,6 @@
             <p class="error-text"></p>
         </div>
 
-<<<<<<< HEAD
-        <div class="weather">
-            <!-- Header with City and Live Time -->
-            <div class="weather-header">
-                <div>
-                    <h2 class="city">--</h2>
-                    <p class="date">--</p>
-                </div>
-                <div class="live-clock">--:--</div>
-            </div>
-
-            <div class="weather-main">
-                <img src="images/rain.png" alt="weather icon" class="weather-icon">
-                <h1 class="temp">--&#176;</h1>
-                <p class="desc">--</p>
-                <p class="feels">Feels like <span class="feels-like">--</span>&#176;</p>
-            </div>
-
-            <div class="details">
-                <div class="col">
-                    <img src="images/humidity.png" alt="humidity icon">
-                    <div>
-                        <p class="humidity">--%</p>
-                        <p class="label">Humidity</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <img src="images/wind.png" alt="wind icon">
-                    <div>
-                        <p class="wind">-- km/h</p>
-                        <p class="label">Wind Speed</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <img src="images/mist.png" alt="pressure icon" style="filter: brightness(0) invert(1);"> 
-                    <!-- Using mist icon as placeholder or generic icon for pressure if no other available, styled white -->
-                    <div>
-                        <p class="pressure">-- hPa</p>
-                        <p class="label">Pressure</p>
-                    </div>
-                </div>
-            </div>
-            
-            <p class="last-updated">Last updated: <span id="updateTime">--</span></p>
-=======
         <!-- Main Weather Card -->
         <div class="weather-card" id="weatherCard" style="display: none;">
             <!-- Current Weather -->
@@ -236,10 +176,10 @@
         <div class="loader" id="loader" style="display: none;">
             <div class="spinner"></div>
             <p>Loading weather data...</p>
->>>>>>> 344d888954e313cc39c558a3efaa466055022e75
         </div>
     </div>
 
     <script src="index.js"></script>
 </body>
+
 </html>
