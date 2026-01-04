@@ -3,24 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
+    <title>Weather Pro - Advanced Weather App</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+<<<<<<< HEAD
     <div class="card">
         <div class="search" role="search">
             <input id="cityInput" type="text" placeholder="Enter city name..." spellcheck="false" autocomplete="off" aria-label="City name">
             <button id="searchBtn" type="button" aria-label="Search weather">
                 <img src="images/search.png" alt="" width="22" height="22">
             </button>
+=======
+    <!-- Animated Background -->
+    <div class="background-animation">
+        <div class="particles"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <span class="weather-icon-header">🌤️</span>
+                    Weather Pro
+                </h1>
+                <div class="header-controls">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <button class="location-btn" id="locationBtn" aria-label="Get current location">
+                        <span>📍</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-container">
+                <input 
+                    id="cityInput" 
+                    type="text" 
+                    placeholder="Search city..." 
+                    spellcheck="false" 
+                    autocomplete="off" 
+                    aria-label="City name"
+                    class="search-input"
+                >
+                <button id="searchBtn" type="button" class="search-btn" aria-label="Search weather">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="favorites-container" id="favoritesContainer"></div>
+>>>>>>> 344d888954e313cc39c558a3efaa466055022e75
         </div>
 
-        <div class="status" aria-live="polite"></div>
+        <!-- Status Message -->
+        <div class="status" id="status" aria-live="polite"></div>
 
-        <div class="error" role="alert">
-            <p class="error-text">Invalid city name</p>
+        <!-- Error Message -->
+        <div class="error" id="error" role="alert" style="display: none;">
+            <span class="error-icon">⚠️</span>
+            <p class="error-text"></p>
         </div>
 
+<<<<<<< HEAD
         <div class="weather">
             <!-- Header with City and Live Time -->
             <div class="weather-header">
@@ -64,6 +119,124 @@
             </div>
             
             <p class="last-updated">Last updated: <span id="updateTime">--</span></p>
+=======
+        <!-- Main Weather Card -->
+        <div class="weather-card" id="weatherCard" style="display: none;">
+            <!-- Current Weather -->
+            <div class="current-weather">
+                <div class="weather-header">
+                    <div class="location-info">
+                        <h2 class="city-name" id="cityName">--</h2>
+                        <p class="date-time" id="dateTime">--</p>
+                    </div>
+                    <button class="favorite-btn" id="favoriteBtn" aria-label="Add to favorites">
+                        <span class="favorite-icon">♡</span>
+                    </button>
+                </div>
+
+                <div class="weather-main">
+                    <div class="weather-icon-container">
+                        <img src="images/clear.png" alt="weather icon" class="weather-icon" id="weatherIcon">
+                        <div class="weather-animation"></div>
+                    </div>
+                    <div class="temperature-section">
+                        <h1 class="temperature" id="temperature">--°</h1>
+                        <p class="weather-description" id="weatherDescription">--</p>
+                        <p class="feels-like">Feels like <span id="feelsLike">--°</span></p>
+                    </div>
+                </div>
+
+                <!-- Weather Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">💨</div>
+                        <div class="metric-info">
+                            <p class="metric-label">Wind Speed</p>
+                            <p class="metric-value" id="windSpeed">-- km/h</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">💧</div>
+                        <div class="metric-info">
+                            <p class="metric-label">Humidity</p>
+                            <p class="metric-value" id="humidity">--%</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">🌡️</div>
+                        <div class="metric-info">
+                            <p class="metric-label">Pressure</p>
+                            <p class="metric-value" id="pressure">-- hPa</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">☀️</div>
+                        <div class="metric-info">
+                            <p class="metric-label">UV Index</p>
+                            <p class="metric-value" id="uvIndex">--</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">🌬️</div>
+                        <div class="metric-info">
+                            <p class="metric-label">Air Quality</p>
+                            <p class="metric-value" id="airQuality">--</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">👁️</div>
+                        <div class="metric-info">
+                            <p class="metric-label">Visibility</p>
+                            <p class="metric-value" id="visibility">-- km</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunrise/Sunset -->
+                <div class="sun-times">
+                    <div class="sun-time">
+                        <span class="sun-icon">🌅</span>
+                        <div>
+                            <p class="sun-label">Sunrise</p>
+                            <p class="sun-value" id="sunrise">--:--</p>
+                        </div>
+                    </div>
+                    <div class="sun-time">
+                        <span class="sun-icon">🌇</span>
+                        <div>
+                            <p class="sun-label">Sunset</p>
+                            <p class="sun-value" id="sunset">--:--</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hourly Forecast -->
+            <div class="forecast-section">
+                <h3 class="section-title">
+                    <span>📅</span> Hourly Forecast
+                </h3>
+                <div class="hourly-forecast" id="hourlyForecast">
+                    <!-- Hourly items will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Daily Forecast -->
+            <div class="forecast-section">
+                <h3 class="section-title">
+                    <span>📆</span> 7-Day Forecast
+                </h3>
+                <div class="daily-forecast" id="dailyForecast">
+                    <!-- Daily items will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loader" id="loader" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading weather data...</p>
+>>>>>>> 344d888954e313cc39c558a3efaa466055022e75
         </div>
     </div>
 
